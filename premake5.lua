@@ -1,13 +1,16 @@
 project "ImGui"
     kind "StaticLib"
     language "C++"
-
+    cppdialect "C++17"
+    staticruntime "On"
     targetdir ("../../build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("../../build/obj/" .. outputdir .. "/%{prj.name}")
+    --[[
     defines
     {
         "IMGUI_API=__declspec(dllexport)"
     }
+    ]]
     files
     {
         "imconfig.h",
@@ -25,8 +28,10 @@ project "ImGui"
     
     filter "system:windows"
         systemversion "latest"
-        cppdialect "C++17"
-        staticruntime "On"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"
         
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MT"
